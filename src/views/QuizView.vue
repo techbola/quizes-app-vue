@@ -1,92 +1,44 @@
 <script setup>
-    import { ref, watch } from "vue";
-    import q from "../data/quizes.json";
-    import Card from "../components/Card.vue";
+    import { computed, ref, watch } from "vue";
+    import { useRoute } from "vue-router";
+    import quizes from "../data/quizes.json";
+    import Question from "@/components/Question.vue";
+    import QuizHeader from "@/components/QuizHeader.vue";
 
-    const quizes = ref(q);
-    const search = ref("");
+    const route = useRoute();
 
-    watch(search, () => {
-        quizes.value = q.filter(quiz => quiz.name.toLowerCase().includes(search.value.toLowerCase()))
+    const quizId = parseInt(route.params.id);
+
+    const quiz = quizes.find((q) => q.id === quizId);
+
+    const currentQuestionIndex = ref(0);
+
+    // const questionStatus = ref(`${currentQuestionIndex.value}/${quiz.questions.length}`);
+
+    // watch(currentQuestionIndex, () => {
+    //     questionStatus.value = `${currentQuestionIndex.value}/${quiz.questions.length}`;
+    // });
+
+    const questionStatus = computed(() => {
+        return `${currentQuestionIndex.value}/${quiz.questions.length}`;
     });
+
+    const barPercentage = computed(() => {
+        return `${currentQuestionIndex.value/quiz.questions.length * 100}%`;
+    });
+
 </script>
 
 <template>
     <div>
-        <header>
-            <h4>Question 1/3</h4>
-            <div class="bar">
-                <div class="completion"></div>
-            </div>
-        </header>
+        <QuizHeader :questionStatus="questionStatus" :barPercentage="barPercentage" />
         <div>
-            <div class="question-container">
-                <h1 class="question">
-                    What is the chemical value of table salt?
-                </h1>
-            </div>
-            <div class="options-container">
-                <div class="option">
-                    <p class="option-label">A</p>
-                    <div class="option-value">
-                        <p>NaCL</p>
-                    </div>
-                </div>
-            </div>
+            <Question :question="quiz.questions[currentQuestionIndex]" />
         </div>
+        <button @click="currentQuestionIndex++">Next Question</button>
     </div>
 </template>
 
 <style scoped>
-    header {
-        margin-top: 20px;
-    }
 
-    header h4 {
-        font-weight: bold;
-    }
-
-    .bar {
-        width: 300px;
-        height: 50px;
-        border: 3px solid bisque;
-    }
-
-    .completion {
-        height: 100%;
-        width: 0%;
-        background-color: bisque;
-    }
-
-    .question-container {
-        margin-top: 20px;
-    }
-
-    .question {
-        font-size: 40px;
-        margin-bottom: 20px;
-    }
-
-    .option {
-        display: flex;
-        margin-bottom: 20px;
-        cursor: pointer;
-    }
-
-    .option-label {
-        background-color: bisque;
-        width: 50px;
-        height: 50px;
-        font-size: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .option-value {
-        background-color: rgb(2444,239, 239);
-        width: 100%;
-        font-size: 30px;
-        padding: 0 20px;
-    }
 </style>
