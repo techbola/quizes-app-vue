@@ -14,62 +14,79 @@
 <template>
     <div>
         <header>
-            <h1>Quiz View</h1>
-            <input v-model.trim="search" type="text" placeholder="Search...">
+            <h4>Question 1/3</h4>
+            <div class="bar">
+                <div class="completion"></div>
+            </div>
         </header>
-        <div class="options-container">
-            <Card v-for="quiz in quizes" :quiz="quiz" :key="quiz.id" />
+        <div>
+            <div class="question-container">
+                <h1 class="question">
+                    What is the chemical value of table salt?
+                </h1>
+            </div>
+            <div class="options-container">
+                <div class="option">
+                    <p class="option-label">A</p>
+                    <div class="option-value">
+                        <p>NaCL</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
     header {
-        margin-bottom: 10px;
-        margin-top: 30px;
-        display: flex;
-        align-items: center;
+        margin-top: 20px;
     }
 
-    header h1 {
+    header h4 {
         font-weight: bold;
-        margin-right: 30px;
     }
 
-    header input {
-        border: none;
-        background-color: rgba(128, 128, 128, 0.1);
-        padding: 10px;
-        border-radius: 5px;
+    .bar {
+        width: 300px;
+        height: 50px;
+        border: 3px solid bisque;
     }
 
-    .options-container {
+    .completion {
+        height: 100%;
+        width: 0%;
+        background-color: bisque;
+    }
+
+    .question-container {
+        margin-top: 20px;
+    }
+
+    .question {
+        font-size: 40px;
+        margin-bottom: 20px;
+    }
+
+    .option {
         display: flex;
-        flex-wrap: wrap;
-        margin-top: 40px;
-    }
-
-    .card {
-        width: 310px;
-        overflow: hidden;
-        border-radius: 2%;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 35px;
-        margin-left: 20px;
+        margin-bottom: 20px;
         cursor: pointer;
     }
 
-    .card img {
+    .option-label {
+        background-color: bisque;
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .option-value {
+        background-color: rgb(2444,239, 239);
         width: 100%;
-        height: 190px;
-        margin: 0;
-    }
-
-    .card .card-text {
-        padding: 0 5px;
-    }
-
-    .card .card-text h2 {
-        font-weight: bold;
+        font-size: 30px;
+        padding: 0 20px;
     }
 </style>
